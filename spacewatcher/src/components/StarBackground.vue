@@ -44,6 +44,6 @@ onMounted(() => {
 
 @keyframes twinkle {
   0%, 100% { opacity: 0.8; }
-  50% { opacity: 0.3; }
+  50% { opacity: 0.1; }
 }
 </style>
