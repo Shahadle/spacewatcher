@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Welcome to SpaceWatcher</h1>
+
   </div>
 </template>
 
