@@ -1,3 +1,2 @@
 # Spacewatcher
-
-# A website to track the moon phases
+A website to track the moon phases
