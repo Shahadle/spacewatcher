@@ -1,14 +1,43 @@
 <template>
-  <div>
-    <input v-model="userQuery"></input>
-    <input v-model="userDate" type="date"></input>
-    <button type="button" @click="onClick">Send</button>
-    <div class="moon-info">
-      <h3>Moon Phase</h3>
-      <div>{{ moonPhase }}</div>
-      <div>
-        <div v-if="moonPhaseImage !== ''">
-          <img alt="moon image" :src="moonPhaseImage">
+  <div class="widget">
+    <h1>Track The Moon</h1>
+    <div class="input-container">
+      <div class="input-wrapper">
+        <label for="location-input">Location</label>
+        <input v-model="userQuery" id="location-input"></input>
+      </div>
+      <div class="input-wrapper">
+        <label for="date-input">Date</label>
+        <input v-model="userDate" type="date" id="date-input"></input>
+      </div>
+    </div>
+    <div>
+      <div class="moon-info">
+        <div class="moon-image">
+          <div v-if="moonPhaseImage !== ''">
+            <img alt="moon image" :src="moonPhaseImage">
+          </div>
+        </div>
+        <div class="moon-text-info">
+          <div>
+            <strong>Moon Phase:</strong>
+            <span>{{ moonPhase }}</span>
+          </div>
+          <div>
+            <strong>Moon Rise:</strong>
+            <span>{{ moonRise }}</span>
+          </div>
+          <div>
+            <strong>Moon Set:</strong>
+            <span>{{ moonSet }}</span>
+          </div>
+          <div>
+            <strong>Moon Illumination:</strong>
+            <span>{{ moonIllumination }}</span>
+          </div>          
+          <div class="button-wrapper">
+            <button type="button" @click="onClick">Send</button>
+          </div>
         </div>
       </div>
     </div>
@@ -19,7 +48,10 @@
   import { ref } from 'vue';
   const userQuery = ref('');
   const userDate = ref('');
-  const moonPhase = ref('Not Fetched Yet');
+  const moonPhase = ref('Search for a Moon Phase!');
+  const moonRise = ref('');
+  const moonSet = ref('');
+  const moonIllumination = ref('');
   const moonPhaseImage = ref('');
   const moonNamesToImages = {
     "First Quarter": "/phase_first_quarter.png",
@@ -39,14 +71,24 @@
     const apiData = await response.json();
     moonPhase.value = apiData.astronomy.astro.moon_phase;
     moonPhaseImage.value = moonNamesToImages[apiData.astronomy.astro.moon_phase];
+    moonRise.value = apiData.astronomy.astro.moonrise;
+    moonSet.value = apiData.astronomy.astro.moonset;
+    moonIllumination.value = apiData.astronomy.astro.moon_illumination;
     console.log(apiData);
   }
 
 </script>
 
 <style>
+.widget{
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
 h1{
-  color: #74ccf0;
+  color: white;
+  text-align: center;
+  font-weight: bold;
 }
 
 .logo {
@@ -55,5 +97,80 @@ h1{
 
 .moon-info {
   color: white;
+}
+
+.input-container{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 16px;
+  .input-wrapper{
+    background-color: var(--input-color);
+    border: 1px solid color-mix(in srgb, white 30%, var(--input-color) 90%);
+    padding: 12px 8px 0 8px; 
+    border-radius: 6px;
+    label{
+      color: hsl(0 0% 70%);
+      display: flex;
+      margin-bottom: 4px;
+    }
+    input{
+      padding: 12px 0;
+      font-family: sans-serif;
+      font-size: 1.2rem;
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      background-color: transparent;
+      color: white;
+      color-scheme: dark;
+      &:focus{
+        outline: none;
+      }
+    }
+  }
+}
+
+.moon-info{
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  .moon-image{
+    height: 450px;
+    max-width: 450px;
+    img{
+      max-width: 100%;
+    }
+  }
+  .moon-text-info{
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    & > div:not(.button-wrapper){
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      strong{
+        color: hsl(0 0% 70%);
+      }
+    }
+  }
+}
+
+.button-wrapper{
+  text-align: end;
+  margin-top: 16px;
+  button{
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    color: white;
+    background-color: color-mix(in srgb, white 10%, var(--input-color) 90%);
+    transition: background-color 150ms;
+    &:hover{
+      cursor: pointer;
+      background-color: color-mix(in srgb, white 15%, var(--input-color) 90%);
+    }
+  }
 }
 </style>
