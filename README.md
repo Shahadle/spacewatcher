@@ -1,5 +1,5 @@
 # 🌙 Spacewatcher
-A website to track the moon phases
+Spacewatcher is a full-stack web application that displays current moon phases and lunar information using real-time data from WeatherAPI.
 
 ⛅ [Weather API](https://www.weatherapi.com/) is used to get the moon information.
 
