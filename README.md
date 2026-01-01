@@ -4,6 +4,16 @@ A website to track the moon phases
 ⛅ [Weather API](https://www.weatherapi.com/) is used to get the moon information.
 
 # Installation 
+Verify that you have Node and NPM installed on your command line.
+```
+node -v
+```
+```
+npm -v
+```
+
+Get a API Key at [Weather API](https://www.weatherapi.com/).
+
 Install the Node Modules in both ```backend``` and ```spacewatcher``` directories:
 ```
 cd backend
@@ -12,8 +22,6 @@ npm install
 cd ../spacewatcher
 npm install
 ```
-
-Get a API Key at [Weather API](https://www.weatherapi.com/).
 
 Set up environment variables:
 Make a copy of the ```.env.example``` file and name it ```.env```. 
