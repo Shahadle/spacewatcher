@@ -28,7 +28,7 @@ onMounted(() => {
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  background: linear-gradient(#000f1a 0%, #0c4656 100%);
+  background: linear-gradient(#000f1a 0%, #072933 100%);
   overflow: hidden;
 }
 

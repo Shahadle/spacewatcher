@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue';
+  import { ref, onMounted } from 'vue';
   const userQuery = ref('');
   const userDate = ref('');
   const moonPhase = ref('Search for a Moon Phase!');
@@ -61,20 +61,40 @@
     "Waning Crescent": "/phase_waning_crescent.png",
     "Waning Gibbous": "/phase_waning_gibbous.png",
     "Waxing Gibbous": "/phase_waxing_gibbous.png",
-    "Waxing Crescent": "/phase_waxing_cresent.png",
+    "Waxing Crescent": "/phase_waxing_crescent.png",
   }
+
+  // local YYYY-MM-DD
+  onMounted(() => {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    userDate.value = `${yyyy}-${mm}-${dd}`;
+  });
+
   async function onClick() {
     const params = new URLSearchParams();
     params.set('query', userQuery.value);
     params.set('dateTime', userDate.value);
     const response = await fetch(`http://localhost:3000/api/v1/astronomy?${params}`);
     const apiData = await response.json();
-    moonPhase.value = apiData.astronomy.astro.moon_phase;
-    moonPhaseImage.value = moonNamesToImages[apiData.astronomy.astro.moon_phase];
-    moonRise.value = apiData.astronomy.astro.moonrise;
-    moonSet.value = apiData.astronomy.astro.moonset;
-    moonIllumination.value = apiData.astronomy.astro.moon_illumination;
-    console.log(apiData);
+
+    const astro = apiData?.astronomy?.astro;
+    if (!astro) {
+      moonPhase.value = "Location not found. Please try another location.";
+      moonPhaseImage.value = "";
+      moonRise.value = "";
+      moonSet.value = "";
+      moonIllumination.value = "";
+      return;
+    }
+
+    moonPhase.value = astro.moon_phase;
+    moonPhaseImage.value = moonNamesToImages[apiData.astronomy.astro.moon_phase] ?? "";
+    moonRise.value = astro.moonrise;
+    moonSet.value = astro.moonset;
+    moonIllumination.value = astro.moon_illumination;
   }
 
 </script>

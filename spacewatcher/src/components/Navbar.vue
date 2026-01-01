@@ -3,7 +3,6 @@
         <div class="logo">
             <img src="/spacewatcherlogo.png" alt="Site Logo"/>
         </div>  
-    <SearchBar />
     </nav>
 
 </template>
